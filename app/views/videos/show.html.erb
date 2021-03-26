@@ -1,0 +1,24 @@
+<%= video_tag @video.file.url, controls: true, class: "w-100" if @video.file? %>
+
+<h4>
+  <%= @video.title %>
+</h4>
+
+작성자: <%= @video.user.email %>
+<%= simple_format @video.description %>
+
+조회수 <%= @video.view_count.to_i %>
+
+<br>
+<% if current_user && (@video.user == current_user) %>
+  <%= link_to '수정', edit_video_path(@video), class: "btn btn-danger" %>
+  <%= link_to '삭제', video_path(@video), method: :delete, data: {confirm: "정말로 삭제하시겠습니까?"}, class: "btn btn-outline-danger" %>
+<% end %>
+
+<!--댓글 (<%#= @videos.comments.count %>)-->
+댓글
+<hr>
+  <% @videos.comments.each do |comment| %>
+    작성자: <%= comment.user.email %>, <%= time_ago_in_words comment.created_at %> 전
+    <%= simple_format comment.body %>
+  <% end %>
